@@ -1,7 +1,11 @@
 body{
 	font-family: Roboto;
 	background-color: #2C2F33;
-	color: #CC00FF;
+	color: #FFFFFF;
+}
+th {
+  color: white; !important
+  background: black; !important
 }
 #title {
 	color: #7289DA;
