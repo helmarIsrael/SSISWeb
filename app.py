@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request, session
 from flask_session import Session
 import mysql.connector
 
+#hello
+
 db = mysql.connector.connect(
     host="localhost",
     user="root",
