@@ -52,6 +52,14 @@ def student_table():
     data = mycursor.fetchall()
     return render_template('student_table.html', data=data)
 
+@app.route('/student_table/delete', methods=['post'])
+def delete_student():
+    if request.method == 'POST':
+        student_id = request.form['currentRow']
+        f = f"DELETE FROM student_info WHERE `Student ID` = '{student_id}'"
+        mycursor.execute(f)
+    return student_id
+
 @app.route('/course_table/', methods=['post'])
 def college_table():
     mycursor.execute('SELECT * FROM course')

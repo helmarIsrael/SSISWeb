@@ -1,11 +1,7 @@
 body{
 	font-family: Roboto;
-	background-color: #2C2F33;
-	color: #FFFFFF;
-}
-th {
-  color: white; !important
-  background: black; !important
+	background-color: #FFFFFF;
+	color: black;
 }
 #title {
 	color: #7289DA;
@@ -28,6 +24,7 @@ th {
 	background-color: #7289DA;
 	color: #FFFFFF;
 }
+
 #mainMenu {
 	color:#FFFFFF;
 	font-size: 35pt;
