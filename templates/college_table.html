@@ -5,17 +5,13 @@
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 		<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.jqueryui.min.css"/>
   		<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 		<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.jqueryui.min.js"></script>
-		<script>
-			$(document).ready( function () {
-				$('#myTable').DataTable();
-			} );
-		</script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
 	</head>
 	
 	<body>
@@ -29,16 +25,6 @@
 						<button type="submit" class="btn-lg btn-link btn-block" id="loginBtn">Add</button>
 					</form>
 				</div>
-				<div class='col'>
-					<form class="d-flex justify-content-center py-2">
-						<button type="submit" class="btn-lg btn-link btn-block" id="loginBtn">Update</button>
-					</form>
-				</div>
-				<div class='col'>
-					<form class="d-flex justify-content-center py-2">
-						<button type="submit" class="btn-lg btn-link btn-block" id="loginBtn">Delete</button>
-					</form>
-				</div>
 			</div>
 		</div> 
 		<div class='container'>
@@ -47,17 +33,40 @@
 					<tr>
 					  <th scope="col">College Code</th>
 					  <th scope="col">College Name</th>
+					  <th scope="col">Actions</th>
 					</tr>
 				 </thead>
 				 <tbody>
 					{% for row in data %}    
 					<tr>
-						<td>{{row[0]}}</td>
+						<td id = "college_code">{{row[0]}}</td>
 						<td>{{row[1]}}</td>
+						<td>
+							<button type="button" class="btn btn-primary" onclick="add()" data-toggle="tooltip" title="Edit">
+								<span class="fas fa-pencil-alt"></span>
+							</button>
+							<button type="button" class="btn btn-danger" id="deleteButton" data-toggle="tooltip" title="Delete">
+								<span class="fas fa-trash"></span>
+							</button>
+						</td>
 					</tr>
 					{% endfor %}
 				 </tbody>
 			</table>
 		</div>
+		<script>
+			$(document).ready( function () {
+				var table = $('#myTable').DataTable();
+				$('table').on('click','.btn', function(){
+					var r = confirm("Confirm deletion?");
+					if (r == true){
+						var currentRow = $(this).closest('tr').find("#college_code").text();
+						$.post('http://127.0.0.1:5000/college_table/delete', {currentRow}, function(){
+						})
+						table.row($(this).parents('tr')).remove().draw();
+					};
+				});
+			});
+		</script>
 	<body>
 <html>

@@ -60,6 +60,22 @@ def delete_student():
         mycursor.execute(f)
     return student_id
 
+@app.route('/college_table/delete', methods=['post'])
+def delete_college():
+    if request.method == 'POST':
+        college_code = request.form['currentRow']
+        f = f"DELETE FROM college WHERE `Code` = '{college_code}'"
+        mycursor.execute(f)
+    return college_code
+
+@app.route('/college_table/delete', methods=['post'])
+def delete_course():
+    if request.method == 'POST':
+        course_code = request.form['currentRow']
+        f = f"DELETE FROM course WHERE `Course Code` = '{course_code}'"
+        mycursor.execute(f)
+    return course_code
+
 @app.route('/course_table/', methods=['post'])
 def college_table():
     mycursor.execute('SELECT * FROM course')

@@ -11,7 +11,6 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.jqueryui.min.css"/>
   		<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 		<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.jqueryui.min.js"></script>
-		
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
 		
 	</head>
@@ -20,6 +19,15 @@
 		<div class="d-flex justify-content-center text-center">
 			<h1 class="font-weight-bold" id="title">Student Table</h1>
 		</div>
+		<div class="container">
+			<div class='row'>
+				<div class='col'>
+					<form class="d-flex justify-content-center py-2">
+						<button type="submit" class="btn-lg btn-link btn-block" id="loginBtn">Add</button>
+					</form>
+				</div>
+			</div>
+		</div> 
 		<div class='container'>
 			<table class="display table table-striped table-hover" id="myTable">
 				 <thead>
@@ -41,12 +49,12 @@
 						<td>{{row[3]}}</td>
 						<td>{{row[4]}}</td>
 						<td>
-						<button type="button" class="btn btn-primary" onclick="add()">
-							<span class="fas fa-pencil-alt"></span>
-						</button>
-						<button type="button" class="btn btn-danger" id="deleteButton">
-							<span class="fas fa-trash"></span>
-						</button>
+							<button type="button" class="btn btn-primary" onclick="add()" data-toggle="tooltip" title="Edit">
+								<span class="fas fa-pencil-alt"></span>
+							</button>
+							<button type="button" class="btn btn-danger" id="deleteButton" data-toggle="tooltip" title="Delete">
+								<span class="fas fa-trash"></span>
+							</button>
 						</td>
 					</tr>
 					{% endfor %}
