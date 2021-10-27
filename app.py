@@ -46,11 +46,69 @@ def main():
         return redirect("/login/")
     return render_template('ssis_main.html')
 
-@app.route('/student_table/', methods=['post'])
+@app.route('/student_table/', methods=['post','get'])
 def student_table():
     mycursor.execute('SELECT * FROM student_info')
     data = mycursor.fetchall()
     return render_template('student_table.html', data=data)
+
+@app.route('/student_table/add/', methods=['post','get'])
+def add_student():
+    mycursor.execute('SELECT `Course` FROM course')
+    data = mycursor.fetchall()
+    if request.method == 'POST' and 'student_id' in request.form:
+        student_id = request.form['student_id']
+        name = request.form['name']
+        year_level = request.form['year_level']
+        gender = request.form['gender']
+        course = request.form['course']
+        f = f"SELECT `Course Code` FROM course WHERE `Course` = '{course}'"
+        mycursor.execute(f)
+        code = mycursor.fetchone()
+        code2 = code[0]
+        mycursor.execute("INSERT INTO `student_info` (`Student ID`, `Name`, `Year Level`, `Gender`, `Course`) "
+                         "VALUES (%s,%s,%s,%s,%s)",
+                         (student_id, name, year_level, gender, code2))
+        db.commit()
+        return redirect("/student_table/")
+    else:
+        pass
+    return render_template('student_add.html', data=data)
+
+@app.route('/course_table/add/', methods=['post','get'])
+def add_course():
+    mycursor.execute('SELECT `Name` FROM college')
+    data = mycursor.fetchall()
+    if request.method == 'POST' and 'course_code' in request.form:
+        course_code = request.form['course_code']
+        course = request.form['course']
+        college = request.form['college']
+        f = f"SELECT `Name` FROM college WHERE `Name` = '{college}'"
+        mycursor.execute(f)
+        code = mycursor.fetchone()
+        code2 = code[0]
+        mycursor.execute("INSERT INTO `course` (`Course Code`, `Course`, `College`) "
+                         "VALUES (%s,%s,%s)",
+                         (course_code, course, code2))
+        db.commit()
+        return redirect("/course_table/")
+    else:
+        pass
+    return render_template('course_add.html', data=data)
+
+@app.route('/college_table/add/', methods=['post','get'])
+def add_college():
+    if request.method == 'POST' and 'college_code' in request.form:
+        college_code = request.form['college_code']
+        college = request.form['college']
+        mycursor.execute("INSERT INTO `college` (`Code`, `Name`) "
+                         "VALUES (%s,%s)",
+                         (college_code, college))
+        db.commit()
+        return redirect("/college_table/")
+    else:
+        pass
+    return render_template('college_add.html')
 
 @app.route('/student_table/delete', methods=['post'])
 def delete_student():
@@ -58,6 +116,7 @@ def delete_student():
         student_id = request.form['currentRow']
         f = f"DELETE FROM student_info WHERE `Student ID` = '{student_id}'"
         mycursor.execute(f)
+        db.commit()
     return student_id
 
 @app.route('/college_table/delete', methods=['post'])
@@ -66,23 +125,25 @@ def delete_college():
         college_code = request.form['currentRow']
         f = f"DELETE FROM college WHERE `Code` = '{college_code}'"
         mycursor.execute(f)
+        db.commit()
     return college_code
 
-@app.route('/college_table/delete', methods=['post'])
+@app.route('/course_table/delete', methods=['post'])
 def delete_course():
     if request.method == 'POST':
         course_code = request.form['currentRow']
         f = f"DELETE FROM course WHERE `Course Code` = '{course_code}'"
         mycursor.execute(f)
+        db.commit()
     return course_code
 
-@app.route('/course_table/', methods=['post'])
+@app.route('/course_table/', methods=['post','get'])
 def college_table():
     mycursor.execute('SELECT * FROM course')
     data = mycursor.fetchall()
     return render_template('course_table.html', data=data)
 
-@app.route('/college_table/', methods=['post'])
+@app.route('/college_table/', methods=['post','get'])
 def course_table():
     mycursor.execute('SELECT * FROM college')
     data = mycursor.fetchall()

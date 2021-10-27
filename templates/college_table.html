@@ -21,7 +21,7 @@
 		<div class="container">
 			<div class='row'>
 				<div class='col'>
-					<form class="d-flex justify-content-center py-2">
+					<form class="d-flex justify-content-center py-2" action="/college_table/add/" method="post">
 						<button type="submit" class="btn-lg btn-link btn-block" id="loginBtn">Add</button>
 					</form>
 				</div>
@@ -57,11 +57,11 @@
 		<script>
 			$(document).ready( function () {
 				var table = $('#myTable').DataTable();
-				$('table').on('click','.btn', function(){
+				$('table').on('click','#deleteButton', function(){
 					var r = confirm("Confirm deletion?");
 					if (r == true){
 						var currentRow = $(this).closest('tr').find("#college_code").text();
-						$.post('http://127.0.0.1:5000/college_table/delete', {currentRow}, function(){
+						$.post('http://127.0.0.1:5000/college_table/delete/', {currentRow}, function(){
 						})
 						table.row($(this).parents('tr')).remove().draw();
 					};
