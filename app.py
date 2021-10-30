@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 import mysql.connector
 
@@ -50,7 +50,9 @@ def main():
 def student_table():
     mycursor.execute('SELECT * FROM student_info')
     data = mycursor.fetchall()
-    return render_template('student_table.html', data=data)
+    mycursor.execute('SELECT `Course` FROM course')
+    fill = mycursor.fetchall()
+    return render_template('student_table.html', data=data, fill=fill)
 
 @app.route('/student_table/add/', methods=['post','get'])
 def add_student():
@@ -74,6 +76,15 @@ def add_student():
     else:
         pass
     return render_template('student_add.html', data=data)
+
+@app.route('/student_table/edit', methods=['post'])
+def edit_student():
+    if request.method == 'POST' and 'currentRow' in request.form:
+        student_id = request.form["currentRow"]
+        f = f"SELECT * FROM student_info"
+        mycursor.execute(f)
+        result = mycursor.fetchall()
+        return result
 
 @app.route('/course_table/add/', methods=['post','get'])
 def add_course():
@@ -116,7 +127,6 @@ def delete_student():
         student_id = request.form['currentRow']
         f = f"DELETE FROM student_info WHERE `Student ID` = '{student_id}'"
         mycursor.execute(f)
-        db.commit()
     return student_id
 
 @app.route('/college_table/delete', methods=['post'])
@@ -125,7 +135,6 @@ def delete_college():
         college_code = request.form['currentRow']
         f = f"DELETE FROM college WHERE `Code` = '{college_code}'"
         mycursor.execute(f)
-        db.commit()
     return college_code
 
 @app.route('/course_table/delete', methods=['post'])
@@ -134,7 +143,6 @@ def delete_course():
         course_code = request.form['currentRow']
         f = f"DELETE FROM course WHERE `Course Code` = '{course_code}'"
         mycursor.execute(f)
-        db.commit()
     return course_code
 
 @app.route('/course_table/', methods=['post','get'])

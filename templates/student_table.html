@@ -11,7 +11,47 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.jqueryui.min.css"/>
   		<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 		<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.jqueryui.min.js"></script>
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">	
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+		<script
+			  src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"
+			  integrity="sha256-xH4q8N0pEzrZMaRmd7gQVcTZiFei+HfRTBPJ1OGXC0k="
+			  crossorigin="anonymous"></script>
+		<link href = "https://code.jquery.com/ui/1.13.0/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+		 
+	
+		<script>
+			$(document).ready( function () {
+				$( "#edit_dialog" ).dialog({
+					autoOpen: false,	
+					width: 500				
+				});
+				var table = $('#myTable').DataTable();
+				$('table').on('click','#deleteButton', function(){
+					var r = confirm("Confirm deletion?");
+					if (r == true){
+						var currentRow = $(this).closest('tr').find("#student_id").text();
+						$.post('http://127.0.0.1:5000/student_table/delete', {currentRow}, function(){
+						});
+						table.row($(this).parents('tr')).remove().draw();
+					};
+				});
+				$('table').on('click','#editButton', function(){
+					var student_id = $(this).closest('tr').find("#student_id").text();
+					var name = $(this).closest('tr').find("#name").text();
+					var year_level = $(this).closest('tr').find("#year_level").text();
+					var gender = $(this).closest('tr').find("#gender").text();
+					var course = $(this).closest('tr').find("#course").text();
+					$( "#edit_dialog" ).dialog( "open" );
+					$("#s").val(student_id);
+					$("#n").val(name);
+					$("#y").val(year_level);
+					$("#g").val(gender);
+					$("#c").val(course);
+				});
+			});
+		</script>
+		
 	</head>
 	
 	<body>
@@ -42,11 +82,11 @@
 				 <tbody>
 					{% for row in data %}    
 					<tr>
-						<td id = "student_id">{{row[0]}}</td>
-						<td>{{row[1]}}</td>
-						<td>{{row[2]}}</td>
-						<td>{{row[3]}}</td>
-						<td>{{row[4]}}</td>
+						<td id="student_id">{{row[0]}}</td>
+						<td id="name">{{row[1]}}</td>
+						<td id="year_level">{{row[2]}}</td>
+						<td id="gender">{{row[3]}}</td>
+						<td id="course">{{row[4]}}</td>
 						<td>
 							<button type="button" class="btn btn-primary" id="editButton" data-toggle="tooltip" title="Edit">
 								<span class="fas fa-pencil-alt"></span>
@@ -58,25 +98,56 @@
 					</tr>
 					{% endfor %}
 				 </tbody>
+					 <div id="edit_dialog" title="Edit Student">
+						<form action="" method="post">
+							<div class="row">
+								<div class="col-4">
+									<label>Student ID:</label>
+								</div>   
+								<div class="col-8">
+									<input type="text" class="form-control" placeholder="20XX-XXXX" id="s"><br><br>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									<label>Name:</label>
+								</div>
+								<div class="col-8">
+									<input type="text" class="form-control" placeholder="First, Middle, Last" id="n"><br><br>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									<label>Year Level:</label>
+								</div>
+								<div class="col-8">
+									<input type="text" class="form-control" placeholder="1, 2, 3 or 4" id="y" value=><br><br>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									<label>Gender:</label>
+								</div>
+								<div class="col-8">
+									<input type="text" class="form-control" placeholder="M or F" id="g" value=><br><br>
+								</div>
+							</div>
+							<div>
+								<div class="col text-center">
+									<label>Course:</label>
+									<select class="form-control" id="c">
+										{% for row in fill %}
+										<option>{{row[0]}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="d-flex justify-content-center py-4">
+								<button type="submit" class="btn" id="loginBtn" name="submit" onclick="return confirm('Are you sure you want to confirm?')">Submit</button>
+							</div>	
+						</form>
+					</div>
 			</table>
 		</div>
-		<script>
-			$(document).ready( function () {
-				var table = $('#myTable').DataTable();
-				$('table').on('click','#deleteButton', function(){
-					var r = confirm("Confirm deletion?");
-					if (r == true){
-						var currentRow = $(this).closest('tr').find("#student_id").text();
-						$.post('http://127.0.0.1:5000/student_table/delete', {currentRow}, function(){
-						})
-						table.row($(this).parents('tr')).remove().draw();
-					};
-				});
-				
-				$('table').on('click','#editButton', function(){
-					
-				});
-			});
-		</script>
 	<body>
 <html>

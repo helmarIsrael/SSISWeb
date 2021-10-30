@@ -2,9 +2,10 @@ body{
 	font-family: Roboto;
 	background-color: #FFFFFF;
 	color: black;
+	height: 100%;
 }
 #title {
-	color: #7289DA;
+	color: #FF9900;
 	font-size: 60pt;
 }
 #usernameFld {
@@ -21,15 +22,23 @@ body{
 	font-size: 30pt;
 }
 #loginBtn {
-	background-color: #7289DA;
+	background-color: #FF9900;
 	color: #FFFFFF;
 }
 
 #mainMenu {
-	color:#FFFFFF;
-	font-size: 35pt;
+	color:#009900;
+	font-size: 70pt;
 }
 #logout {
 	background-color: #FF3333;
 	color:#FFFFFF;
 }
+.ui-widget-header,.ui-state-default, ui-button {
+            background:#b9cd6d;
+            border: 1px solid #b9cd6d;
+            color: #FFFFFF;
+            font-weight: bold;
+		position:center;
+         }
+
