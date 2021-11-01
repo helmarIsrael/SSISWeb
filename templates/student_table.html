@@ -47,7 +47,7 @@
 					$("#n").val(name);
 					$("#y").val(year_level);
 					$("#g").val(gender);
-					$("#c").val(course);
+					$("#c option[value=course]").attr('selected', 'selected');
 				});
 			});
 		</script>
@@ -99,13 +99,13 @@
 					{% endfor %}
 				 </tbody>
 					 <div id="edit_dialog" title="Edit Student">
-						<form action="" method="post">
+						<form action="/student_table/edit" method="post">
 							<div class="row">
 								<div class="col-4">
 									<label>Student ID:</label>
 								</div>   
 								<div class="col-8">
-									<input type="text" class="form-control" placeholder="20XX-XXXX" id="s"><br><br>
+									<input type="text" class="form-control" placeholder="20XX-XXXX" id="s" name="student_id" readonly><br><br>
 								</div>
 							</div>
 							<div class="row">
@@ -113,7 +113,7 @@
 									<label>Name:</label>
 								</div>
 								<div class="col-8">
-									<input type="text" class="form-control" placeholder="First, Middle, Last" id="n"><br><br>
+									<input type="text" class="form-control" placeholder="First, Middle, Last" id="n" name="name"><br><br>
 								</div>
 							</div>
 							<div class="row">
@@ -121,7 +121,7 @@
 									<label>Year Level:</label>
 								</div>
 								<div class="col-8">
-									<input type="text" class="form-control" placeholder="1, 2, 3 or 4" id="y" value=><br><br>
+									<input type="text" class="form-control" placeholder="1, 2, 3 or 4" id="y" name="year_level"><br><br>
 								</div>
 							</div>
 							<div class="row">
@@ -129,15 +129,15 @@
 									<label>Gender:</label>
 								</div>
 								<div class="col-8">
-									<input type="text" class="form-control" placeholder="M or F" id="g" value=><br><br>
+									<input type="text" class="form-control" placeholder="M or F" id="g" name="gender"><br><br>
 								</div>
 							</div>
 							<div>
 								<div class="col text-center">
 									<label>Course:</label>
-									<select class="form-control" id="c">
+									<select class="form-control" id="c" name="course">
 										{% for row in fill %}
-										<option>{{row[0]}}</option>
+										<option>{{row[1]}}</option>
 										{% endfor %}
 									</select>
 								</div>

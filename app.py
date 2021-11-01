@@ -50,7 +50,7 @@ def main():
 def student_table():
     mycursor.execute('SELECT * FROM student_info')
     data = mycursor.fetchall()
-    mycursor.execute('SELECT `Course` FROM course')
+    mycursor.execute('SELECT * FROM course')
     fill = mycursor.fetchall()
     return render_template('student_table.html', data=data, fill=fill)
 
@@ -77,14 +77,23 @@ def add_student():
         pass
     return render_template('student_add.html', data=data)
 
-@app.route('/student_table/edit', methods=['post'])
+@app.route('/student_table/edit', methods=['post', 'get'])
 def edit_student():
-    if request.method == 'POST' and 'currentRow' in request.form:
-        student_id = request.form["currentRow"]
-        f = f"SELECT * FROM student_info"
+    if request.method == 'POST' and "student_id" in request.form:
+        student_id = request.form['student_id']
+        name = request.form['name']
+        year_level = request.form['year_level']
+        gender = request.form['gender']
+        course = request.form['course']
+        f = f"SELECT `Course Code` FROM course WHERE `Course` = '{course}'"
         mycursor.execute(f)
-        result = mycursor.fetchall()
-        return result
+        code = mycursor.fetchone()
+        code2 = code[0]
+        query2 = f"UPDATE `student_info` SET `Student ID` = '{student_id}', `Name` = '{name}', `Year Level` = '{year_level}', `Gender` ='{gender}', `Course` = '{code2}' WHERE `Student ID` = '{student_id}'"
+        mycursor.execute(query2)
+        db.commit()
+        return redirect("/student_table/")
+    return redirect("/student_table/")
 
 @app.route('/course_table/add/', methods=['post','get'])
 def add_course():
@@ -106,6 +115,31 @@ def add_course():
     else:
         pass
     return render_template('course_add.html', data=data)
+
+@app.route('/course_table/edit', methods=['post', 'get'])
+def edit_course():
+    if request.method == 'POST' and "code" in request.form:
+        code = request.form['code']
+        name = request.form['name']
+        college = request.form['college']
+
+        query2 = f"UPDATE `course` SET `Course Code` = '{code}', `Course` = '{name}', `College` = '{college}' WHERE `Course Code` = '{code}'"
+        mycursor.execute(query2)
+        db.commit()
+        return redirect("/course_table/")
+    return redirect("/course_table/")
+
+@app.route('/college_table/edit', methods=['post', 'get'])
+def edit_college():
+    if request.method == 'POST' and "code" in request.form:
+        code = request.form['code']
+        name = request.form['name']
+
+        query2 = f"UPDATE `college` SET `Code` = '{code}', `Name` = '{name}' WHERE `Code` = '{code}'"
+        mycursor.execute(query2)
+        db.commit()
+        return redirect("/college_table/")
+    return redirect("/college_table/")
 
 @app.route('/college_table/add/', methods=['post','get'])
 def add_college():
@@ -146,13 +180,15 @@ def delete_course():
     return course_code
 
 @app.route('/course_table/', methods=['post','get'])
-def college_table():
+def course_table():
     mycursor.execute('SELECT * FROM course')
     data = mycursor.fetchall()
-    return render_template('course_table.html', data=data)
+    mycursor.execute('SELECT * FROM college')
+    fill = mycursor.fetchall()
+    return render_template('course_table.html', data=data, fill=fill)
 
 @app.route('/college_table/', methods=['post','get'])
-def course_table():
+def college_table():
     mycursor.execute('SELECT * FROM college')
     data = mycursor.fetchall()
     return render_template('college_table.html', data=data)
