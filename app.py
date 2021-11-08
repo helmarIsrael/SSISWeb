@@ -85,11 +85,7 @@ def edit_student():
         year_level = request.form['year_level']
         gender = request.form['gender']
         course = request.form['course']
-        f = f"SELECT `Course Code` FROM course WHERE `Course` = '{course}'"
-        mycursor.execute(f)
-        code = mycursor.fetchone()
-        code2 = code[0]
-        query2 = f"UPDATE `student_info` SET `Student ID` = '{student_id}', `Name` = '{name}', `Year Level` = '{year_level}', `Gender` ='{gender}', `Course` = '{code2}' WHERE `Student ID` = '{student_id}'"
+        query2 = f"UPDATE `student_info` SET `Student ID` = '{student_id}', `Name` = '{name}', `Year Level` = '{year_level}', `Gender` ='{gender}', `Course` = '{course}' WHERE `Student ID` = '{student_id}'"
         mycursor.execute(query2)
         db.commit()
         return redirect("/student_table/")
