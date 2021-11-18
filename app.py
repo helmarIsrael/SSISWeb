@@ -30,7 +30,7 @@ def login():
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
-        mycursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
+        mycursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
         account = mycursor.fetchone()
         if account:
             session['username'] = request.form.get('username')
@@ -56,7 +56,7 @@ def student_table():
 
 @app.route('/student_table/add/', methods=['post','get'])
 def add_student():
-    mycursor.execute('SELECT `Course` FROM course')
+    mycursor.execute('SELECT `Course Name` FROM course')
     data = mycursor.fetchall()
     if request.method == 'POST' and 'student_id' in request.form:
         student_id = request.form['student_id']
@@ -64,10 +64,6 @@ def add_student():
         year_level = request.form['year_level']
         gender = request.form['gender']
         course = request.form['course']
-        f = f"SELECT `Course Code` FROM course WHERE `Course` = '{course}'"
-        mycursor.execute(f)
-        code = mycursor.fetchone()
-        code2 = code[0]
         mycursor.execute("INSERT INTO `student_info` (`Student ID`, `Name`, `Year Level`, `Gender`, `Course`) "
                          "VALUES (%s,%s,%s,%s,%s)",
                          (student_id, name, year_level, gender, code2))
